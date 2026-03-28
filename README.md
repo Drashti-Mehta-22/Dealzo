@@ -1,36 +1,127 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# 🛍️ Dealzo — Product Price Tracker
 
-## Getting Started
+> Track prices. Save money. Never overpay again.
 
-First, run the development server:
+Dealzo monitors product prices from any e-commerce site and instantly alerts you when the price drops. Paste a URL, and DealDrop takes care of the rest — scraping, storing, and notifying.
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+---
+
+## ✨ Features
+
+- 🔐 **Google Sign-In** — Secure authentication with Google OAuth via Supabase
+- 🤖 **AI-Powered Scraping** — Firecrawl extracts product name, price, currency, and image from any URL
+- 📊 **Price History Charts** — Interactive graphs showing price trends over time
+- 🔄 **Automated Price Checks** — Daily scheduled jobs re-scrape all tracked products automatically
+- 📧 **Email Alerts** — Clean, minimal email notifications when a price drops — showing old price, new price, and savings
+
+---
+
+## 🛠️ Tech Stack
+
+| Layer | Technology |
+|---|---|
+| Framework | Next.js 16 (App Router) |
+| Language | TypeScript |
+| Database | Supabase (PostgreSQL) |
+| Authentication | Supabase Google OAuth |
+| Scraping | Firecrawl |
+| Email | Resend |
+| UI Components | shadcn/ui |
+| Styling | Tailwind CSS |
+| Charts | Recharts |
+
+---
+
+## 🔍 How It Works
+
+```
+User pastes a product URL
+        ↓
+Firecrawl scrapes name, price, currency & image
+        ↓
+Product saved to Supabase with initial price
+        ↓
+Daily job re-scrapes all tracked products
+        ↓
+Price changed? → Update DB + record in price history
+        ↓
+Price dropped? → Send email alert via Resend
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+---
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+## 🚀 Getting Started
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+### Prerequisites
 
-## Learn More
+- Node.js 18+
+- [Supabase](https://supabase.com) account
+- [Firecrawl](https://firecrawl.dev) account
+- [Resend](https://resend.com) account
+- Google Cloud Console project with OAuth 2.0 credentials
 
-To learn more about Next.js, take a look at the following resources:
+## 🔒 Environment Variables
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+Create a `.env.local` file in the root directory:
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+```env
+# Supabase
+NEXT_PUBLIC_SUPABASE_URL=your_supabase_project_url
+NEXT_PUBLIC_SUPABASE_ANON_KEY=your_supabase_anon_key
+SUPABASE_SERVICE_ROLE_KEY=your_supabase_service_role_key
 
-## Deploy on Vercel
+# Firecrawl
+FIRECRAWL_API_KEY=your_firecrawl_api_key
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+# Resend
+RESEND_API_KEY=your_resend_api_key
+RESEND_FROM_EMAIL=onboarding@resend.dev
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+# Security
+CRON_SECRET=your_generated_secret
+NEXT_PUBLIC_APP_URL=http://localhost:3000
+```
+
+Generate a secure `CRON_SECRET`:
+
+```bash
+node -e "console.log(require('crypto').randomBytes(32).toString('hex'))"
+```
+---
+
+## ⚙️ Service Setup
+
+### Supabase
+1. Create a new project at [supabase.com](https://supabase.com)
+2. Run the database migrations in the SQL editor to set up `product` and `price_history` tables with Row Level Security
+3. Enable **Google** under Authentication → Providers
+4. Add your Google OAuth credentials from Google Cloud Console
+5. Set the redirect URI to your Supabase callback URL
+
+### Firecrawl
+1. Sign up at [firecrawl.dev](https://firecrawl.dev)
+2. Copy your API key into `FIRECRAWL_API_KEY`
+
+### Resend
+1. Sign up at [resend.com](https://resend.com)
+2. Copy your API key into `RESEND_API_KEY`
+3. Use `onboarding@resend.dev` for testing — no domain needed
+
+---
+
+## 📦 Deployment
+
+1. Push your code to GitHub and import the repo into [Vercel](https://vercel.com)
+2. Add all environment variables in Vercel project settings
+3. Set `NEXT_PUBLIC_APP_URL` to your production Vercel URL
+4. Update the Google OAuth redirect URI with your production domain
+5. Update Supabase allowed redirect URLs with your production URL
+
+---
+
+## ⚠️ Known Limitations
+
+- Sites with aggressive anti-bot protection (Amazon, Zara) may cause occasional scraping timeouts
+- Resend free tier only allows sending to your own registered email without a verified custom domain
+
+---
