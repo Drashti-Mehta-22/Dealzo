@@ -23,7 +23,7 @@ export function AuthModel({isOpen, onClose}: AuthModelProps) {
     await supabase.auth.signInWithOAuth({
       provider: "google",
       options:{
-        redirectTo: `${origin}/auth/callback`
+        redirectTo: `${origin}/api/callback`
       }
     })
   }
