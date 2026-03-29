@@ -40,11 +40,11 @@ export default async function Home() {
 
           <div className="flex items-center gap-3">
             <Image
-              src={"/dealzo-logo.png"}
+              src={"/dealzo-price-logo.png"}
               alt="Dealzo"
               width={600}
               height={500}
-              className="h-12.5 w-auto opacity-80 hover:opacity-100 transition"
+              className="h-12.5 w-auto"
             />
           </div>
 
