@@ -7,40 +7,40 @@ import { AuthModel } from './AuthModel'
 import { SignOut } from '@/actions/serverAction'
 
 interface AuthButtonProps<T> {
-  user: T 
+  user: T
 }
 
-const AuthButton = <T,>({user} : AuthButtonProps<T>) => {
+const AuthButton = <T,>({ user }: AuthButtonProps<T>) => {
 
-    const [ShowModel, setShowModel] = useState(false)
+  const [ShowModel, setShowModel] = useState(false)
 
-    if(user){
-        return(
-            <form action={SignOut}>
-                <Button variant="ghost" type='submit' size="lg" className="bg-orange-200 gap-2 cursor-pointer">
-            <LogOut className="w-4 h-4"/>
-            Sign out
+  if (user) {
+    return (
+      <form action={SignOut}>
+        <Button variant="ghost" type='submit' size="lg" className="bg-orange-700 gap-2 cursor-pointer">
+          <LogOut className="w-4 h-4" />
+          Sign out
         </Button>
-            </form>
-        )
-    }
+      </form>
+    )
+  }
 
   return (
     <>
-        <Button
-          onClick={()=>{setShowModel(true)}}
-          variant="default"
-          size="lg"
-          className="bg-orange-700 hover:bg-orange-600 gap-2 cursor-pointer text-md"
-          >
-            <LogIn className="w-4 h-4"/>
-            Sign In
-        </Button>
+      <Button
+        onClick={() => { setShowModel(true) }}
+        variant="default"
+        size="lg"
+        className="bg-orange-700 hover:bg-orange-600 gap-2 cursor-pointer text-md"
+      >
+        <LogIn className="w-4 h-4" />
+        Sign In
+      </Button>
 
-        <AuthModel
-            isOpen={ShowModel}
-            onClose={()=> setShowModel(false)}
-         />
+      <AuthModel
+        isOpen={ShowModel}
+        onClose={() => setShowModel(false)}
+      />
     </>
   )
 }

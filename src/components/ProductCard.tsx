@@ -25,17 +25,17 @@ interface ProductCardProps {
   product: Product
 }
 
-const ProductCard = ({product}: ProductCardProps) => {
-    const [showChart, setShowChart] = useState(false)
+const ProductCard = ({ product }: ProductCardProps) => {
+  const [showChart, setShowChart] = useState(false)
   const [deleting, setDeleting] = useState(false)
 
- const handleDelete = async () => {
+  const handleDelete = async () => {
     if (!confirm("Remove this product from tracking?")) return
 
     setDeleting(true)
     const result = await deleteProduct(product.id)
 
-    if(result.error){
+    if (result.error) {
       toast.error(result.error)
     } else {
       toast.success("Product removed successfully")
@@ -45,41 +45,52 @@ const ProductCard = ({product}: ProductCardProps) => {
   }
 
   return (
-    <Card className="hover:shadow-lg transition-shadow">
+    <Card className="bg-[#0a0a0a] border border-white/3 rounded-2xl">
+
+      {/* HEADER */}
       <CardHeader className="pb-3">
         <div className="flex gap-4">
-          {product.image_url && (
-    
-            <div className="w-20 h-20 rounded-md border bg-orange-50 flex items-center justify-center">
-  <ShoppingBag className="w-8 h-8 text-orange-300" />
-</div>
-          )}
 
+          {/* Image / Placeholder */}
+          <div className="w-20 h-20 rounded-xl border border-white/10 bg-white/5 flex items-center justify-center">
+            <ShoppingBag className="w-8 h-8 text-orange-400 opacity-80" />
+          </div>
+
+          {/* Content */}
           <div className="flex-1 min-w-0">
-            <h3 className="font-semibold text-gray-00 line-clamp-2 mb-2 text-lg">
+
+            <h3 className="font-semibold text-white line-clamp-2 mb-2 text-lg tracking-tight">
               {product.name}
             </h3>
 
-            <div className="flex items-baseline gap-2">
-              <span className="text-2xl font-bold text-orange-500">
+            {/* Price */}
+            <div className="flex items-center gap-2 flex-wrap">
+
+              <span className="text-2xl font-bold text-orange-400">
                 {product.currency} {product.currency_price}
               </span>
-              <Badge variant="secondary" className="gap-1">
+
+              {/* Tracking Badge */}
+              <Badge className="gap-1 bg-orange-500/10 text-orange-400 border border-orange-500/20">
                 <TrendingDown className="w-3 h-3" />
                 Tracking
               </Badge>
+
             </div>
           </div>
         </div>
       </CardHeader>
 
+      {/* ACTIONS */}
       <CardContent>
         <div className="flex flex-wrap gap-2">
+
+          {/* Chart Toggle */}
           <Button
             variant="outline"
             size="sm"
             onClick={() => setShowChart(!showChart)}
-            className="gap-1"
+            className="gap-1 bg-white/5 border-white/10 text-gray-300 hover:bg-white/10 hover:text-white"
           >
             {showChart ? (
               <>
@@ -94,33 +105,42 @@ const ProductCard = ({product}: ProductCardProps) => {
             )}
           </Button>
 
-          <Button variant="outline" size="sm" asChild className="gap-1">
+          {/* View Product */}
+          <Button
+            variant="outline"
+            size="sm"
+            asChild
+            className="gap-1 bg-white/5 border-white/10 text-gray-300 hover:bg-orange-500/10 hover:border-orange-400/40 hover:text-orange-400"
+          >
             <Link href={product.url} target="_blank" rel="noopener noreferrer">
               <ExternalLink className="w-4 h-4" />
-              View Product
+              View
             </Link>
           </Button>
 
+          {/* Delete */}
           <Button
             variant="ghost"
             size="sm"
             onClick={handleDelete}
             disabled={deleting}
-            className="text-red-600 hover:text-red-700 hover:bg-red-50 gap-1"
+            className="gap-1 text-red-400 hover:text-red-300 hover:bg-red-500/10"
           >
             <Trash2 className="w-4 h-4" />
             Remove
           </Button>
+
         </div>
       </CardContent>
 
+      {/* CHART */}
       {showChart && (
-        <CardFooter className="pt-0">
+        <CardFooter className="pt-2 border-t border-white/10">
           <PriceChart productId={product.id} />
         </CardFooter>
-  )}
-  </Card>
-  )
+      )}
+    </Card>
+  );
 }
 
 export default ProductCard
