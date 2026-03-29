@@ -31,7 +31,7 @@ const AuthButton = <T,>({user} : AuthButtonProps<T>) => {
           onClick={()=>{setShowModel(true)}}
           variant="default"
           size="lg"
-          className="bg-orange-500 hover:bg-orange-600 gap-2 cursor-pointer"
+          className="bg-orange-700 hover:bg-orange-600 gap-2 cursor-pointer text-md"
           >
             <LogIn className="w-4 h-4"/>
             Sign In
